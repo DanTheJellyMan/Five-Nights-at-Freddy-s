@@ -97,7 +97,9 @@ async function startGame() {
 }
 
 function stopSound(sound) {
-    sound.pause();
-    while (sound.paused === true) {};
+    while (sound.paused === false) {
+        sound.pause();
+        console.log(sound.paused);
+    };
     sound.currentTime = 0;
 }
