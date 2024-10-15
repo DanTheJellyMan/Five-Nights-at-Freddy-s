@@ -1,8 +1,9 @@
 import { CreateAnimatronics } from "./modules/animatronics.js";
 
-onmessage = function(e) {
-    const e = e.data;
+self.onmessage = function(event) {
+    const e = event.data;
+    console.log(event, e);
     if (e.type === "start") {
-        new CreateAnimatronics;
+        console.log(new CreateAnimatronics);
     }
 }
