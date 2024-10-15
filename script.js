@@ -96,7 +96,7 @@ async function startGame() {
     await fadeOut;
 }
 
-async function stopSound(sound) {
+function stopSound(sound) {
     const pausing = new Promise((resolve, reject) => {
         sound.pause();
         setTimeout(() => {
@@ -105,7 +105,7 @@ async function stopSound(sound) {
             } else {
                 reject();
             }
-        }, 100);
+        }, 50);
     });
     pausing
         .then(() => sound.currentTime = 0)
