@@ -1,4 +1,5 @@
-const night = 1;
+const worker = new Worker("./game_worker.js", {type: "module"});
+let night = 1;
 const selectSound = new Audio("./audio/Blip.mp3");
 selectSound.loop = false;
 const music = new Audio("./audio/Main Menu theme.mp3");
@@ -19,7 +20,7 @@ for (const li of options) {
     }
 }
 
-document.onkeydown = async e => {
+document.onkeydown = e => {
     if (document.querySelector("#menu").matches(".invisible")) return;
     if (["ArrowUp", "ArrowDown", "Tab"].includes(e.key)) {
         options[currentOption].classList.remove("hovered");
@@ -43,7 +44,7 @@ document.onkeydown = async e => {
                 }
             }
             options[currentOption].classList.add("hovered");
-            await selectSound.play();
+            selectSound.play();
             break;
         case "Enter":
             if (options[currentOption].innerHTML === "New Game") {
@@ -94,20 +95,10 @@ async function startGame() {
         }, 2500);
     });
     await fadeOut;
+    worker.postMessage({type: "start"}, "*");
 }
 
 function stopSound(sound) {
-    const pausing = new Promise((resolve, reject) => {
-        sound.pause();
-        setTimeout(() => {
-            if (sound.paused === true) {
-                resolve();
-            } else {
-                reject();
-            }
-        }, 50);
-    });
-    pausing
-        .then(() => sound.currentTime = 0)
-        .catch(() => stopSound(sound));
+    sound.pause();
+    sound.currentTime = 0;
 }
