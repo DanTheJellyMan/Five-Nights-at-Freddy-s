@@ -14,6 +14,7 @@ for (const li of options) {
     li.onmouseenter = e => {
         e.target.classList.add("hovered");
         currentOption = options.indexOf(e.target);
+        selectSound.stop();
         selectSound.play();
     }
 }
@@ -28,6 +29,7 @@ document.onkeydown = e => {
         case "ArrowUp": currentOption -= 2;
         case "ArrowDown": currentOption++;
         case "Tab":
+            selectSound.stop();
             e.preventDefault();
             if (currentOption > options.length-1) {
                 currentOption = 0;
