@@ -95,7 +95,7 @@ async function startGame() {
         }, 2500);
     });
     await fadeOut;
-    worker.postMessage({type: "start"}, "*");
+    worker.postMessage({type: "start"});
 }
 
 function stopSound(sound) {
