@@ -96,10 +96,18 @@ async function startGame() {
     await fadeOut;
 }
 
-function stopSound(sound) {
-    while (sound.paused === false) {
+async function stopSound(sound) {
+    const pausing = new Promise((resolve, reject) => {
         sound.pause();
-        console.log(sound.paused);
-    };
-    sound.currentTime = 0;
+        setTimeout(() => {
+            if (sound.paused === true) {
+                resolve();
+            } else {
+                reject();
+            }
+        }, 100);
+    });
+    pausing
+        .then(() => sound.currentTime = 0)
+        .catch(() => stopSound(sound));
 }
