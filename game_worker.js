@@ -4,6 +4,6 @@ self.onmessage = function(event) {
     const e = event.data;
     console.log(event, e);
     if (e.type === "start") {
-        console.log(new CreateAnimatronics);
+        console.log(new CreateAnimatronics());
     }
 }
