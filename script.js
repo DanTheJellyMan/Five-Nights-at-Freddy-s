@@ -11,15 +11,15 @@ for (const li of options) {
     li.onmouseout = e => {
         e.target.classList.remove("hovered");
     }
-    li.onmouseenter = e => {
+    li.onmouseenter = async e => {
         e.target.classList.add("hovered");
         currentOption = options.indexOf(e.target);
-        selectSound.stop();
-        selectSound.play();
+        stopSound(selectSound);
+        await selectSound.play();
     }
 }
 
-document.onkeydown = e => {
+document.onkeydown = async e => {
     if (document.querySelector("#menu").matches(".invisible")) return;
     if (["ArrowUp", "ArrowDown", "Tab"].includes(e.key)) {
         options[currentOption].classList.remove("hovered");
@@ -29,7 +29,7 @@ document.onkeydown = e => {
         case "ArrowUp": currentOption -= 2;
         case "ArrowDown": currentOption++;
         case "Tab":
-            selectSound.stop();
+            stopSound(selectSound);
             e.preventDefault();
             if (currentOption > options.length-1) {
                 currentOption = 0;
@@ -43,7 +43,7 @@ document.onkeydown = e => {
                 }
             }
             options[currentOption].classList.add("hovered");
-            selectSound.play();
+            await selectSound.play();
             break;
         case "Enter":
             if (options[currentOption].innerHTML === "New Game") {
@@ -56,8 +56,7 @@ document.onkeydown = e => {
 
 async function startGame() {
     selectSound.play();
-    music.pause();
-    music.currentTime = 0;
+    stopSound(music);
     document.querySelector("#menu").classList.add("invisible");
     
     const startScreen = document.querySelector("#start-screen");
@@ -95,4 +94,10 @@ async function startGame() {
         }, 2500);
     });
     await fadeOut;
+}
+
+function stopSound(sound) {
+    sound.pause();
+    while (sound.paused === true) {};
+    sound.currentTime = 0;
 }
